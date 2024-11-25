@@ -56,7 +56,12 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     ?>
         <div class="col-md-4" id="<?php echo $i  ?>">
             <div class="card">
-                <img src="images/<?php echo $product['image']; ?>" class="card-img-top"  id="fotos" alt="<?php echo $product['name']; ?>">
+            <img src="images/<?php echo $product['image']; ?>" 
+     class="card-img-top mx-auto d-block" 
+     style="height: 200px; width: 100%; object-fit: contain; background-color: #f8f9fa;" 
+     alt="<?php echo $product['name']; ?>">
+
+
                 <div class="card-body">
                     <h5 class="card-title"><?php echo $product['name']; ?></h5>
                     <p class="card-text">R$ <?php echo number_format($product['price'], 2, ',', '.'); ?></p>

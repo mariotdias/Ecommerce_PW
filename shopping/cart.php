@@ -1,28 +1,36 @@
-<?php 
-session_start();
+<?php
 require './database/db.php';
 require './base/header.php';
 
-$stmt = $pdo->query("SELECT * FROM products"); //Consulta BD
-$products = $stmt->fetchAll(PDO::FETCH_ASSOC); //Obtém Dados
+// Busca todos os produtos do banco de dados
+$stmt = $pdo->query("SELECT * FROM products");
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-
-// Decodifica o valor do cookie 'cart' como um array
-$cart = json_decode($_COOKIE['cart'], true);
-
-// Verifica se a decodificação foi bem-sucedida e se $cart é um array
-if (is_array($cart)) {
-    foreach (array_unique($cart) as $product_id) {
-        if (isset($products[$product_id])) {
-            $name = $products[$product_id]['name'];
-            $price = $products[$product_id]['price'];
-            $product_count = array_count_values($cart)[$product_id];
-            echo $name . ": " . $product_count . " (R$" . number_format($price * $product_count, 2) . ")" . "<hr>";
-        }
-    }
-} else {
-    echo "O carrinho está vazio ou há um problema com os dados do cookie.";
+// Reorganiza os produtos em um array associativo com base no ID
+$products_by_id = [];
+foreach ($products as $product) {
+    $products_by_id[$product['id']] = $product; // Use o campo 'id' real do banco
 }
 
-require './base/footer.php';
+// Verifica se o cookie 'cart' está definido
+$cart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
+
+// Se o carrinho estiver vazio, mostra uma mensagem
+if (empty($cart)) {
+    echo "Seu carrinho está vazio.";
+} else {
+    $product_counts = array_count_values($cart);
+
+    // Exibe os produtos do carrinho
+    foreach ($product_counts as $product_id => $quantity) {
+        if (isset($products_by_id[$product_id])) {
+            $product = $products_by_id[$product_id];
+            $name = $product['name'];
+            $price = $product['price'];
+            echo "$name: $quantity (R$" . number_format($price * $quantity, 2, ',', '.') . ")<hr>";
+        } else {
+            echo "Produto com ID $product_id não encontrado.<hr>";
+        }
+    }
+}
 ?>
