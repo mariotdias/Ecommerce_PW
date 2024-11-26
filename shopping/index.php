@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,10 +46,10 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $totalProducts = count($products); 
     
 
-    if(array_key_exists("add_to_cart", $_POST)){
+    if(array_key_exists("add_to_cart", $_POST)){ // Caso exista o Array, será adicionado como um valor inteiro
         add_to_cart(intval($_POST['product_id']));
  
-      //Repetição demonstração produtos
+      //Demonstração produtos
     }
     for ($i = 0; $i < $totalProducts; $i++):
         $product = $products[$i];

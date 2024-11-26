@@ -9,7 +9,7 @@ if (isset($_SESSION['user_id'])) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
-    $password = md5($_POST['password']); // Criptografando a senha com MD5
+    $password = md5($_POST['password']); 
 
     $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ? AND password = ?"); // Consulta BD
     $stmt->execute([$username, $password]);

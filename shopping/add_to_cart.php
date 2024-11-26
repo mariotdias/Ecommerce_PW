@@ -3,7 +3,7 @@ function add_to_cart($product_id) {
     // Inicializa o carrinho como array vazio
     $cart = [];
 
-    // Verifica se o cookie existe e contém uma string válida
+    // Verifica se o cookie existe e se possui uma string válida
     if (isset($_COOKIE['cart']) && is_string($_COOKIE['cart'])) {
         $decoded_cart = json_decode($_COOKIE['cart'], true);
         if (is_array($decoded_cart)) {

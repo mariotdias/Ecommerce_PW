@@ -2,26 +2,26 @@
 require './database/db.php';
 require './base/header.php';
 
-// Busca todos os produtos do banco de dados
+// Acessa os itens no bd
 $stmt = $pdo->query("SELECT * FROM products");
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Reorganiza os produtos em um array associativo com base no ID
+// Reorganiza os produtos em um array com base no ID de cada um
 $products_by_id = [];
 foreach ($products as $product) {
-    $products_by_id[$product['id']] = $product; // Use o campo 'id' real do banco
+    $products_by_id[$product['id']] = $product;
 }
 
-// Verifica se o cookie 'cart' está definido
+// Confirma se o cookie está definido
 $cart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
 
-// Se o carrinho estiver vazio, mostra uma mensagem
+
 if (empty($cart)) {
     echo "Seu carrinho está vazio.";
 } else {
     $product_counts = array_count_values($cart);
 
-    // Exibe os produtos do carrinho
+    // Mostra produtos do carrinho
     foreach ($product_counts as $product_id => $quantity) {
         if (isset($products_by_id[$product_id])) {
             $product = $products_by_id[$product_id];
