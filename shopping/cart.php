@@ -21,7 +21,6 @@ if (empty($cart)) {
 } else {
     $product_counts = array_count_values($cart);
 
-    // Mostra produtos do carrinho
     foreach ($product_counts as $product_id => $quantity) {
         if (isset($products_by_id[$product_id])) {
             $product = $products_by_id[$product_id];
